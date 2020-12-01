@@ -4,6 +4,7 @@ import slides from "./slidesData.js";
 // !!!!!!!! SELECT ITEMS !!!!!!!!
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
+const slideshowContainer = document.getElementById("slideshow-container");
 const slideContainer = document.getElementById("slide-container");
 const slidePlaceholder = document.getElementById("slide-placeholder");
 const dotsContainer = document.getElementById("dots-container");
@@ -14,7 +15,7 @@ const windowWidth = window.innerWidth;
 
 let dotCount = 0;
 
-let dotsArray, slideArray;
+let dotsArray, slideArray, autoSlides;
 
 // !!!!!!!! EVENT LISTENERS !!!!!!!!
 prevBtn.addEventListener("click", () => {
@@ -22,6 +23,13 @@ prevBtn.addEventListener("click", () => {
 });
 nextBtn.addEventListener("click", () => {
   displaySlide();
+});
+
+slideshowContainer.addEventListener("mouseover", () => {
+  clearInterval(autoSlides);
+});
+slideshowContainer.addEventListener("mouseleave", () => {
+  startInterval();
 });
 
 // !!!!!!!! FUNCTION !!!!!!!!
@@ -88,6 +96,8 @@ function initialSlide() {
 
   slideArray = Array.from(document.querySelectorAll(".slide"));
   // console.log(slideArray);
+
+  startInterval();
 }
 
 // ******** display clicked slide (by .dot-btn) **********
@@ -201,6 +211,11 @@ function displaySlide(prev) {
     // *** add .focus ***
     dotBtnArray[dotCount].classList.add("focus");
   }
+}
+
+// ******** auto change slides (every three seconds) **********
+function startInterval() {
+  autoSlides = setInterval(displaySlide, 3000);
 }
 
 initialSlide();
